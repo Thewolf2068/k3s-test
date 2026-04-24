@@ -1,10 +1,53 @@
-helm:
-  values: |
-    globalArguments:
-      - "--global.sendanonymoususage=false"
-    ingressRoute:
-      dashboard:
-        enabled: false
-    logs:
-      access:
-        enabled: true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    chart: traefik
+    targetRevision: "26.1.0"
+    helm:
+      values: |
+        globalArguments:
+          - "--global.sendanonymoususage=false"
+        ports:
+          web:
+            redirectTo:
+              port: websecure
+          websecure:
+            tls:
+              enabled: true
+        certResolvers:
+          cloudflare:
+            email: "your@email.com"
+            dnsChallenge:
+              provider: cloudflare
+              resolvers: ["1.1.1.1:53", "8.8.8.8:53"]
+            storage: /data/acme.json
+        persistence:
+          enabled: true
+          size: 128Mi
+        env:
+          - name: CF_DNS_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-token
+                key: token
+        ingressRoute:
+          dashboard:
+            enabled: false
+        logs:
+          access:
+            enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
