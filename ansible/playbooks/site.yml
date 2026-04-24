@@ -1,0 +1,8 @@
+- name: k3s + ArgoCD boostrap
+  hosts: myhosts
+  become: true
+  vars_files:
+    - ../group_vars/all/server_vars.yml
+  roles: 
+    - role: xanmanning.k3s
+    - argocd

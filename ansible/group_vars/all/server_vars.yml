@@ -1,0 +1,5 @@
+k3s_server:
+  disable:
+    - traefik
+k3s_become: true
+
