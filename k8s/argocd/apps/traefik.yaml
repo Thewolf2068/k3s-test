@@ -30,12 +30,6 @@ spec:
         persistence:
           enabled: true
           size: 128Mi
-        env:
-          - name: CF_DNS_API_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: cloudflare-api-token
-                key: token
         ingressRoute:
           dashboard:
             enabled: false
