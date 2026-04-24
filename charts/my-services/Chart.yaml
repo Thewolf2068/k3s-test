@@ -1,0 +1,4 @@
+apiVersion: v2
+name: my-services
+description: Single Helm chart for all my cluster services
+version: 0.1.0

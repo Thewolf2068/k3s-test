@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      # This applies the UID/GID to the ENTIRE pod (all containers)
+      securityContext:
+        runAsUser: {{ .Values.global.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.global.securityContext.runAsGroup }}
+      containers:
+        - name: jellyfin
+          # Tracing the tree: .Values -> services -> jellyfin -> imageTag
+          image: jellyfin/jellyfin:{{ .Values.services.jellyfin.imageTag }}
+          ports:
+            - containerPort: {{ .Values.services.jellyfin.port }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: {{ printf "https://%s.%s" (.Values.services.jellyfin.subdomain | default "jellyfin") .Values.global.domain | quote }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config-pvc
+        - name: media
+          hostPath:
+            path: /opt/jellyfin/media
