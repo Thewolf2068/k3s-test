@@ -1,0 +1,10 @@
+helm:
+  values: |
+    globalArguments:
+      - "--global.sendanonymoususage=false"
+    ingressRoute:
+      dashboard:
+        enabled: false
+    logs:
+      access:
+        enabled: true
