@@ -8,7 +8,10 @@ spec:
   source:
     repoURL: https://github.com/Thewolf2068/k3s-test
     targetRevision: HEAD
-    path: k8s/jellyfin
+    path: charts/my-services     # <--- CHANGED: Points to the folder with Chart.yaml
+    helm:
+      valueFiles:
+        - values.yaml            # <--- ADDED: Tells ArgoCD to inject these variables
   destination:
     server: https://kubernetes.default.svc
     namespace: jellyfin
