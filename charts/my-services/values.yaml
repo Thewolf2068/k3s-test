@@ -1,3 +1,5 @@
+domain: "miquella.dev"
+
 global:
   securityContext:
     runAsUser: 1000
