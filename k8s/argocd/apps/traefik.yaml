@@ -20,13 +20,13 @@ spec:
           # websecure:
           #   tls:
           #     enabled: true
-        certResolvers:
-          cloudflare:
-            email: "your@email.com"
-            dnsChallenge:
-              provider: cloudflare
-              resolvers: ["1.1.1.1:53", "8.8.8.8:53"]
-            storage: /data/acme.json
+        # certResolvers:
+        #   cloudflare:
+        #     email: "your@email.com"
+        #     dnsChallenge:
+        #       provider: cloudflare
+        #       resolvers: ["1.1.1.1:53", "8.8.8.8:53"]
+        #     storage: /data/acme.json
         persistence:
           enabled: true
           size: 128Mi
