@@ -12,6 +12,11 @@ spec:
     metadata:
       labels:
         app: navidrome
+      annotations:
+        pre.hook.backup.velero.io/container: navidrome
+        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof navidrome || echo 1)"]'
+        post.hook.backup.velero.io/container: navidrome
+        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof navidrome || echo 1)"]'
     spec:
       securityContext:
         runAsUser: {{ .Values.global.securityContext.runAsUser }}

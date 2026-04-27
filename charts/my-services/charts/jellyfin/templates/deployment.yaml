@@ -12,6 +12,11 @@ spec:
     metadata:
       labels:
         app: jellyfin
+      annotations:
+        pre.hook.backup.velero.io/container: jellyfin
+        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof jellyfin || echo 1)"]'
+        post.hook.backup.velero.io/container: jellyfin
+        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof jellyfin || echo 1)"]'
     spec:
       # This applies the UID/GID to the ENTIRE pod (all containers)
       securityContext:
