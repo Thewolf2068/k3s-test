@@ -1,4 +1,10 @@
 apiVersion: v2
 name: my-services
-description: Single Helm chart for all my cluster services
+description: A Helm umbrella chart for my home lab
 version: 0.1.0
+
+dependencies:
+  - name: jellyfin
+    version: "0.1.0"
+    repository: "file://./charts/jellyfin"
+    condition: jellyfin.enabled

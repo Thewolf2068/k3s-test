@@ -1,15 +1,10 @@
-
 global:
   domain: "miquella.dev"
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
 
-services:
-  jellyfin:
-    enabled: true
-    imageTag: "10.10.7"
-    port: 8096
-    anubis:
-      enabled: true
-      difficulty: 4
+jellyfin:
+  enabled: true
+  imageTag: "10.10.7"
+  port: 8096
