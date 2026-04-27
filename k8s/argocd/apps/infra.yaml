@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-config
+  name: infra
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/Thewolf2068/k3s-test
     targetRevision: HEAD
-    path: k8s/traefik
+    path: k8s/infra
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
@@ -16,5 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
