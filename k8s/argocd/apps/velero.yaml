@@ -8,14 +8,15 @@ spec:
   source:
     repoURL: https://vmware-tanzu.github.io/helm-charts
     chart: velero
-    targetRevision: "8.3.0" # Keep this to stay on v1.15.2
+    targetRevision: "8.3.0" 
     helm:
       values: |
         configuration:
-          defaultVolumesToFsBackup: true # Backs up all PVC data automatically
+          # Automatically back up all PVC data without needing annotations
+          defaultVolumesToFsBackup: true
           backupStorageLocation:
             - name: default
-              provider: aws
+              provider: velero.io/aws
               bucket: k3s-backups
               config:
                 region: auto
@@ -23,6 +24,7 @@ spec:
                 s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
           volumeSnapshotLocation: []
 
+        # Plugin version matched to Velero 1.15.x
         initContainers:
           - name: velero-plugin-for-aws
             image: velero/velero-plugin-for-aws:v1.11.1
@@ -30,16 +32,15 @@ spec:
               - mountPath: /target
                 name: plugins
 
-        # THE CRITICAL FIX FOR NODE AGENT
+        # The 'Muscles': This block ensures data actually gets moved to R2
         nodeAgent:
           enabled: true
-          # FIX 1: Add both label styles so Velero v1.15 can find the pods
+          # Discovery Fix: Velero 1.15+ needs this exact label to find the agent
           podLabels:
-            name: node-agent
             role: node-agent
           containerSecurityContext:
             privileged: true
-          # FIX 2: Allow the agent to run on your single K3s master node
+          # K3s Fix: Allows the agent to run on your control-plane node
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
@@ -51,8 +52,9 @@ spec:
         credentials:
           useSecret: true
           existingSecret: velero-s3-credentials
-        
+
         upgradeCRDs: false
+
         kubectl:
           image:
             repository: bitnami/kubectl
