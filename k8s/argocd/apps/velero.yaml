@@ -35,6 +35,11 @@ spec:
             schedule: "0 3 * * *"
             template:
               ttl: "720h"
+      upgradeJob:
+        image:
+          repository: bitnami/kubectl
+          tag: "1.34.0" # Or "latest" if you want to be safe
+      deployNodeAgent: true
 
   destination:
     server: https://kubernetes.default.svc
