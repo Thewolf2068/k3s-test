@@ -16,7 +16,7 @@ spec:
             - name: default
               # We use the fully qualified provider name to match the log error
               provider: velero.io/aws 
-              bucket: k3s-backup
+              bucket: k3s-backups
               config:
                 region: auto
                 s3ForcePathStyle: true
