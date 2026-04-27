@@ -28,7 +28,7 @@ spec:
               mountPath: /music
           env:
             - name: ND_LASTFM_ENABLED
-              value: true
+              value: "true"
             - name: ND_LASTFM_APIKEY
               valueFrom:
                 secretKeyRef:
