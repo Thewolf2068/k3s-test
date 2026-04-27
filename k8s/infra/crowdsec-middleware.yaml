@@ -7,7 +7,5 @@ spec:
   plugin:
     crowdsec-bouncer:
       enabled: true
-      crowdsecLapiKeySecretName: crowdsec-bouncer-key
-      crowdsecLapiKeySecretNamespace: traefik
-      crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKeyFile: /etc/crowdsec/key
+      crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
