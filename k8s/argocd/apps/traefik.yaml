@@ -13,6 +13,9 @@ spec:
       values: |
         globalArguments:
           - "--global.sendanonymoususage=false"
+        additionalArguments:
+          - "--experimental.plugins.crowdsec-bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+          - "--experimental.plugins.crowdsec-bouncer.version=v1.3.5"
         ports:
           web:
             port: 8000
@@ -22,6 +25,10 @@ spec:
           websecure:
             port: 8443
             exposedPort: 443
+        providers:
+          kubernetesCRD:
+            enabled: true
+            allowCrossNamespaceReferences: true
         certResolvers:
           cloudflare:
             email: "malenia@miquella.dev"
@@ -46,9 +53,6 @@ spec:
         logs:
           access:
             enabled: true
-        additionalArguments:
-        - "--experimental.plugins.crowdsec-bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-        - "--experimental.plugins.crowdsec-bouncer.version=v1.3.5"
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
