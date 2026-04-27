@@ -30,7 +30,7 @@ spec:
               mountPath: /media
           env:
             - name: JELLYFIN_PublishedServerUrl
-              value: {{ printf "https://%s.%s" (.Values.services.jellyfin.subdomain | default "jellyfin") .Values.global.domain | quote }}
+              value: {{ printf "https://%s.%s" (.Values.subdomain | default "jellyfin") .Values.global.domain | quote }}
       volumes:
         - name: config
           persistentVolumeClaim:

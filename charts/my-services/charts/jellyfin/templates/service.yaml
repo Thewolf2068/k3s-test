@@ -8,6 +8,5 @@ spec:
   selector:
     app: jellyfin
   ports:
-    - port: {{ .Values.services.jellyfin.port }}
-      targetPort: {{ .Values.services.jellyfin.port }}
-      # nodePort: {{ .Values.services.jellyfin.nodePort }}
+    - port: {{ .Values.port }}
+      targetPort: {{ .Values.port }}

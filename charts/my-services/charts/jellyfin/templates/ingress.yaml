@@ -14,6 +14,6 @@ spec:
           namespace: traefik
       services:
         - name: jellyfin
-          port: {{ .Values.services.jellyfin.port }}
+          port: {{ .Values.port }}
   tls:
     certResolver: cloudflare
