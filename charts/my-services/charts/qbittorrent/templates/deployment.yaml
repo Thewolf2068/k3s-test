@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+spec:
+  selector:                   
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:                 
+        app: qbittorrent
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.global.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.global.securityContext.runAsGroup }}
+        fsGroup: {{ .Values.global.securityContext.runAsGroup }}
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: qbittorrent
+          image: ghcr.io/home-operations/qbittorrent:{{ .Values.imageTag }}
+          ports:                  # BEST PRACTICE: Declare your container port
+            - containerPort: {{ .Values.port }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: media
+          hostPath: 
+            path: /media
+            type: Directory
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
