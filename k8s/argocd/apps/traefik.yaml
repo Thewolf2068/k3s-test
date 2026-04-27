@@ -17,12 +17,29 @@ spec:
           web:
             port: 8000
             exposedPort: 80
+            redirectTo:
+              port: websecure
           websecure:
             port: 8443
             exposedPort: 443
+        certResolvers:
+          cloudflare:
+            email: "malenia@miquella.dev"
+            dnsChallenge:
+              provider: cloudflare
+              resolvers:
+                - "1.1.1.1:53"
+                - "8.8.8.8:53"
+            storage: /data/acme.json
         persistence:
           enabled: true
           size: 128Mi
+        env:
+          - name: CF_DNS_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-token
+                key: token
         ingressRoute:
           dashboard:
             enabled: false

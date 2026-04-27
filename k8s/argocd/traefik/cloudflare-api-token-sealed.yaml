@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: cloudflare-api-token
+  namespace: traefik
+spec:
+  encryptedData:
+    token: AgBbI3YGFGX44lHXbkdEl8USMuk2bpojX3x4pi8VUWe8cHMAtzWn+YDl37d+g8pH1Kp+fR52/A3FcnxTflvaiDSEzs2Gieu76gSPiOPrXpKkynMkeUXmUjab0qzkO908TGbXSDu7nBnFNjACWkLZzTNtcAqxCynL7eSIqqxoTB/W5a24N4soPWMVmhD4i4iv2P6ZKK0L0VKvTSP7yysPRjpZ2XrToVfkMR1zAoa8VbYuHIVggKFcAdra+OfwYwc/mgbERxHpf259hLf7RkLrj06jLyzez7qOY98/Q8mbf7VUKrtkwq7OeY5/HvsJr/ny4KDCM1pIVuoDzUSzNL2GyQebT7gxm6s4aZzIshOEZ/aNAnVUNlynMTjFXh+5sClwsuK4eZweJ4JyyXVe1RyuwHClIpYbf/FqMyulKVG5dWFh7VQHalRqzBzXb0F1uJZNnUm9vg1WpNf1I/qgMro/ybVGJYBLtC/CM2ou6U4koxPBjeWAeS1jG+LT6WuBqZ74OE8uxuByYHwEMYREYenurLqU7C2hsx4oJeTrbSMrf5u7s7xKw2qvbQpT+269Ptcq4+FT2yU936vSj56UZQw9CJ0Ad72SbMJWxDqDbG5D/6fpt5jRp43EGm+TE7BBdFvypN0OMpew5mtMKdWJKJ8zXOyoyiDNn8KCsMFszHYZnC/b/q/Ylx+4f9c/R6fScopNj7AnwwpCjp1et02g0avb/u8AdLOsbudXIxR2z0/7FV6aK9UkLjslE4ZYcxr4Yvs8f/K5lhNr2g==
+  template:
+    metadata:
+      name: cloudflare-api-token
+      namespace: traefik
