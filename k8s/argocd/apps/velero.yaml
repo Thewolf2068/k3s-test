@@ -24,7 +24,6 @@ spec:
                 s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
           volumeSnapshotLocation: []
 
-        # Force the plugin as a TRUE initContainer to stop the 'BackOff'
         initContainers:
           - name: velero-plugin-for-aws
             image: velero/velero-plugin-for-aws:v1.13.0
@@ -32,7 +31,6 @@ spec:
               - mountPath: /target
                 name: plugins
 
-        # Fixes the "node agent not found" warning in your logs
         nodeAgent:
           enabled: true
           containerSecurityContext:
