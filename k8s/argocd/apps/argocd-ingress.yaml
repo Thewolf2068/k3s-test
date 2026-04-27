@@ -14,6 +14,6 @@ spec:
           port: 80
       middlewares:
         - name: crowdsec-bouncer
-          namespace: crowdsec
+          namespace: traefik
   tls:
     certResolver: cloudflare # Must match your Traefik resolver name
