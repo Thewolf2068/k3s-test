@@ -13,6 +13,13 @@ spec:
       values: |
         globalArguments:
           - "--global.sendanonymoususage=false"
+        ports:
+          web:
+            port: 8000
+            exposedPort: 80
+          websecure:
+            port: 8443
+            exposedPort: 443
         persistence:
           enabled: true
           size: 128Mi
