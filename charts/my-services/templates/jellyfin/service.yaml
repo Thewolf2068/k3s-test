@@ -10,4 +10,4 @@ spec:
   ports:
     - port: {{ .Values.services.jellyfin.port }}
       targetPort: {{ .Values.services.jellyfin.port }}
-      nodePort: {{ .Values.services.jellyfin.nodePort }}
+      # nodePort: {{ .Values.services.jellyfin.nodePort }}
