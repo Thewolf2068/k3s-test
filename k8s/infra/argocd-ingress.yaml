@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`argocd.miquella.dev`)
+      services:
+        - name: argocd-server
+          port: 80
+      middlewares:
+        - name: crowdsec-bouncer
+          namespace: infra
+  tls:
+    certResolver: cloudflare # Must match your Traefik resolver name
