@@ -50,6 +50,9 @@ spec:
         logs:
           access:
             enabled: true
+        service:
+          spec:
+            externalTrafficPolicy: Local
         deployment:
           additionalVolumes:
             - name: plugins-storage
