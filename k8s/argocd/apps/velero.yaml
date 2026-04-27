@@ -8,13 +8,14 @@ spec:
   source:
     repoURL: https://vmware-tanzu.github.io/helm-charts
     chart: velero
-    targetRevision: "12.0.0" # Latest stable major version
+    targetRevision: "8.3.0" # This is the actual latest Tanzu chart for v1.18+
     helm:
       values: |
         configuration:
           backupStorageLocation:
             - name: default
-              provider: aws
+              # We use the fully qualified provider name to match the log error
+              provider: velero.io/aws 
               bucket: k3s-backup
               config:
                 region: auto
@@ -22,19 +23,22 @@ spec:
                 s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
           volumeSnapshotLocation: []
 
-        # Latest plugin for v1.17/v1.18 compatibility
-        plugins:
-          - velero/velero-plugin-for-aws:v1.13.0
+        # Force the plugin as a TRUE initContainer to stop the 'BackOff'
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.13.0
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
 
-        # Disabling the upgrade hook that caused the first error
-        upgradeCRDs: false
-
-        # The new 'Node Agent' replaces the old Restic daemonset
+        # Fixes the "node agent not found" warning in your logs
         nodeAgent:
           enabled: true
-          privileged: true
+          containerSecurityContext:
+            privileged: true
 
-        # Clean kubectl image for CRD management
+        upgradeCRDs: false
+
         kubectl:
           image:
             repository: bitnami/kubectl
