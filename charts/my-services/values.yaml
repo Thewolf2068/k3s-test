@@ -10,4 +10,6 @@ services:
     enabled: true
     imageTag: "10.10.7"
     port: 8096
-    nodePort: 30096
+    anubis:
+      enabled: true
+      difficulty: 4
