@@ -19,8 +19,7 @@ spec:
         runAsGroup: {{ .Values.global.securityContext.runAsGroup }}
       containers:
         - name: jellyfin
-          # Tracing the tree: .Values -> services -> jellyfin -> imageTag
-          image: jellyfin/jellyfin:{{ .Values.services.jellyfin.imageTag }}
+          image: jellyfin/jellyfin:{{ .Values.imageTag }}
           ports:
             - containerPort: {{ .Values.services.jellyfin.port }}
           volumeMounts:
