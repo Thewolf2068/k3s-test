@@ -28,15 +28,12 @@ spec:
             volumeMounts:
               - mountPath: /target
                 name: plugins
-
-        # THIS is the key that actually creates the DaemonSet
         deployNodeAgent: true
-
         nodeAgent:
-          podVolumePath: /var/lib/rancher/k3s/agent/kubelet
+          # Default is /var/lib/kubelet/pods — this k3s install uses standard kubelet paths
+          # so we leave podVolumePath unset
           containerSecurityContext:
             privileged: true
-
         credentials:
           useSecret: true
           existingSecret: velero-s3-credentials
