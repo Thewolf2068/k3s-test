@@ -50,6 +50,13 @@ spec:
         logs:
           access:
             enabled: true
+        deployment:
+          additionalVolumes:
+            - name: plugins-storage
+              emptyDir: {}
+        additionalVolumeMounts:
+          - name: plugins-storage
+            mountPath: /plugins-storage
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
