@@ -57,19 +57,18 @@ spec:
             - name: crowdsec-bouncer-key
               secret:
                 secretName: crowdsec-bouncer-key
-
         additionalVolumeMounts:
           - name: plugins-storage
             mountPath: /plugins-storage
           - name: crowdsec-bouncer-key
             mountPath: /etc/crowdsec
             readOnly: true
-    destination:
-      server: https://kubernetes.default.svc
+  destination:
+    server: https://kubernetes.default.svc
     namespace: traefik
-    syncPolicy:
-      automated:
-        prune: true
+  syncPolicy:
+    automated:
+      prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
