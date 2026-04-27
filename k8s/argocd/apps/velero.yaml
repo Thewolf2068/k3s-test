@@ -12,6 +12,7 @@ spec:
     helm:
       values: |
         configuration:
+          defaultVolumesToFsBackup: true
           backupStorageLocation:
             - name: default
               # We use the fully qualified provider name to match the log error
