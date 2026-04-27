@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    chart: velero
+    targetRevision: "12.0.0" # Latest stable major version
+    helm:
+      values: |
+        configuration:
+          backupStorageLocation:
+            - name: default
+              provider: aws
+              bucket: k3s-backup
+              config:
+                region: auto
+                s3ForcePathStyle: true
+                s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
+          volumeSnapshotLocation: []
+
+        # Latest plugin for v1.17/v1.18 compatibility
+        plugins:
+          - velero/velero-plugin-for-aws:v1.13.0
+
+        # Disabling the upgrade hook that caused the first error
+        upgradeCRDs: false
+
+        # The new 'Node Agent' replaces the old Restic daemonset
+        nodeAgent:
+          enabled: true
+          privileged: true
+
+        # Clean kubectl image for CRD management
+        kubectl:
+          image:
+            repository: bitnami/kubectl
+            tag: latest
+
+        credentials:
+          useSecret: true
+          existingSecret: velero-s3-credentials
+
+        schedules:
+          velero-daily-backup:
+            schedule: "0 3 * * *"
+            template:
+              ttl: "720h"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true
