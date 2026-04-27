@@ -28,29 +28,15 @@ spec:
             volumeMounts:
               - mountPath: /target
                 name: plugins
+
+        # THIS is the key that actually creates the DaemonSet
+        deployNodeAgent: true
+
         nodeAgent:
-          enabled: true
-          podLabels:
-            name: node-agent
-            role: node-agent
+          podVolumePath: /var/lib/rancher/k3s/agent/kubelet/pods
           containerSecurityContext:
             privileged: true
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: node-role.kubernetes.io/master
-              operator: Exists
-              effect: NoSchedule
-          # k3s stores pod volumes here instead of the default kubelet path
-          extraVolumes:
-            - name: host-pods
-              hostPath:
-                path: /var/lib/rancher/k3s/agent/kubelet/pods
-          extraVolumeMounts:
-            - name: host-pods
-              mountPath: /host_pods
-              mountPropagation: HostToContainer
+
         credentials:
           useSecret: true
           existingSecret: velero-s3-credentials
