@@ -33,7 +33,7 @@ spec:
         deployNodeAgent: true
 
         nodeAgent:
-          podVolumePath: /var/lib/rancher/k3s/agent/kubelet/pods
+          podVolumePath: /var/lib/rancher/k3s/agent/kubelet
           containerSecurityContext:
             privileged: true
 
