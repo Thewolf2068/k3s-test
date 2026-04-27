@@ -13,10 +13,6 @@ spec:
       values: |
         globalArguments:
           - "--global.sendanonymoususage=false"
-        additionalArguments:
-          - "--experimental.plugins.crowdsec-bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-          - "--experimental.plugins.crowdsec-bouncer.version=v1.3.5"
-          - "--providers.kubernetescrd.allowCrossNamespace=true"
         ports:
           web:
             port: 8000
@@ -53,19 +49,6 @@ spec:
         service:
           spec:
             externalTrafficPolicy: Local
-        deployment:
-          additionalVolumes:
-            - name: plugins-storage
-              emptyDir: {}
-            - name: crowdsec-bouncer-key
-              secret:
-                secretName: crowdsec-bouncer-key
-        additionalVolumeMounts:
-          - name: plugins-storage
-            mountPath: /plugins-storage
-          - name: crowdsec-bouncer-key
-            mountPath: /etc/crowdsec
-            readOnly: true
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
