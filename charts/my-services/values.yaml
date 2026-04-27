@@ -8,3 +8,8 @@ jellyfin:
   enabled: true
   imageTag: "10.10.7"
   port: 8096
+
+navidrome:
+  enabled: true
+  imageTag: "0.61.2"
+  port: "4533"
