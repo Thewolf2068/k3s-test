@@ -20,24 +20,23 @@ spec:
                 region: auto
                 s3ForcePathStyle: true
                 s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
-          
-          # THE FIX: Explicitly set this to an empty list.
-          # This stops the chart from creating an invalid "default" VSL.
           volumeSnapshotLocation: []
 
-          plugins:
-            - velero/velero-plugin-for-aws:v1.9.0
+        # THE FIX: Plugins must be injected as initContainers in this chart version
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.9.0
+            volumeMounts:
+              - mountPath: /plugins
+                name: plugins
 
-        # Disabling the problematic upgrade job entirely
         upgradeCRDs: false
 
-        # Overriding the broken auto-detected image
         kubectl:
           image:
             repository: bitnamilegacy/kubectl
             tag: "1.33"
 
-        # Engine for local-path / hostPath backups
         deployNodeAgent: true
 
         credentials:
@@ -45,7 +44,7 @@ spec:
           existingSecret: velero-s3-credentials
 
         schedules:
-          daily-backup:
+          velero-daily-backup: # Matches the name you used in the CLI
             schedule: "0 3 * * *"
             template:
               ttl: "720h"
