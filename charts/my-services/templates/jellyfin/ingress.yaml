@@ -5,10 +5,12 @@ metadata:
   namespace: jellyfin
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
     - match: Host(`jelly.miquella.dev`)
       kind: Rule
       services:
         - name: jellyfin
           port: {{ .Values.services.jellyfin.port }}
+  tls:
+    certResolver: cloudflare
