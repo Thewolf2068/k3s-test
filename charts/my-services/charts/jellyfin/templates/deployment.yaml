@@ -21,7 +21,7 @@ spec:
         - name: jellyfin
           image: jellyfin/jellyfin:{{ .Values.imageTag }}
           ports:
-            - containerPort: {{ .Values.services.jellyfin.port }}
+            - containerPort: {{ .Values.port }}
           volumeMounts:
             - name: config
               mountPath: /config
