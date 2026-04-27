@@ -8,15 +8,14 @@ spec:
   source:
     repoURL: https://vmware-tanzu.github.io/helm-charts
     chart: velero
-    targetRevision: "8.3.0"
+    targetRevision: "8.3.0" # Keep this to stay on v1.15.2
     helm:
       values: |
         configuration:
-          # THE "JUST WORK" SETTING: Backs up all volume data by default
-          defaultVolumesToFsBackup: true 
+          defaultVolumesToFsBackup: true # Backs up all PVC data automatically
           backupStorageLocation:
             - name: default
-              provider: velero.io/aws 
+              provider: aws
               bucket: k3s-backups
               config:
                 region: auto
@@ -24,17 +23,23 @@ spec:
                 s3Url: https://ba7af738ac3fcf781135c6b598a7f096.r2.cloudflarestorage.com
           volumeSnapshotLocation: []
 
-        plugins:
-          - velero/velero-plugin-for-aws:v1.13.0
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.11.1
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
 
+        # THE CRITICAL FIX FOR NODE AGENT
         nodeAgent:
           enabled: true
-          # FIX 1: Explicitly add the 'role' label so Velero can find the agent
+          # FIX 1: Add both label styles so Velero v1.15 can find the pods
           podLabels:
+            name: node-agent
             role: node-agent
           containerSecurityContext:
             privileged: true
-          # FIX 2: Allow the agent to run on your K3s control-plane node
+          # FIX 2: Allow the agent to run on your single K3s master node
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
@@ -43,15 +48,22 @@ spec:
               operator: Exists
               effect: NoSchedule
 
-        upgradeCRDs: false
         credentials:
           useSecret: true
           existingSecret: velero-s3-credentials
+        
+        upgradeCRDs: false
+        kubectl:
+          image:
+            repository: bitnami/kubectl
+            tag: latest
+
         schedules:
           velero-daily-backup:
             schedule: "0 3 * * *"
             template:
               ttl: "720h"
+
   destination:
     server: https://kubernetes.default.svc
     namespace: velero
