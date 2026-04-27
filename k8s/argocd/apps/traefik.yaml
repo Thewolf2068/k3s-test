@@ -16,6 +16,7 @@ spec:
         additionalArguments:
           - "--experimental.plugins.crowdsec-bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
           - "--experimental.plugins.crowdsec-bouncer.version=v1.3.5"
+          - "--providers.kubernetesCRD.allowCrossNamespaceReferences=true"
         ports:
           web:
             port: 8000
@@ -25,10 +26,6 @@ spec:
           websecure:
             port: 8443
             exposedPort: 443
-        providers:
-          kubernetesCRD:
-            enabled: true
-            allowCrossNamespaceReferences: true
         certResolvers:
           cloudflare:
             email: "malenia@miquella.dev"
