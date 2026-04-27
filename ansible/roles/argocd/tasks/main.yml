@@ -1,17 +1,71 @@
-- name: Create ArgoCD namespace
-  ansible.builtin.command:
-    cmd: kubectl create namespace argocd
-  environment:
-    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: 
+      - python3-kubernetes
+      - python3-yaml
+    state: present
   become: true
-  register: ns_result
-  failed_when:
-    - ns_result.rc != 0
-    - '"already exists" not in ns_result.stderr'
 
-- name: Install ArgoCD
-  ansible.builtin.command:
-    cmd: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.0/manifests/install.yaml
-  environment:
-    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+- name: Create ArgoCD namespace natively
+  kubernetes.core.k8s:
+    name: argocd
+    api_version: v1
+    kind: Namespace
+    state: present
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+  become: true
+
+- name: Add ArgoCD Helm repository
+  kubernetes.core.helm_repository:
+    name: argo
+    repo_url: "https://argoproj.github.io/argo-helm"
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+  become: true
+
+- name: Deploy ArgoCD via Helm
+  kubernetes.core.helm:
+    name: argocd
+    chart_ref: argo/argo-cd
+    release_namespace: argocd
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    state: present
+    values:
+      configs:
+        params:
+          server.insecure: true
+      server:
+        ingress:
+          enabled: false
+  become: true
+
+
+- name: Create kube-system namespace if it doesn't exist
+  kubernetes.core.k8s:
+    name: kube-system
+    api_version: v1
+    kind: Namespace
+    state: present
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+  become: true
+
+- name: Deploy Vaulted Sealed Secrets Master Key
+  kubernetes.core.k8s:
+    state: present
+    # Ansible Vault automatically decrypts this during the run 
+    # if you provide the --ask-vault-pass flag
+    definition: "{{ lookup('file', 'sealed-secrets-master.key.yaml') | from_yaml }}"
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+  become: true
+- name: Download App of Apps manifest from remote Git repository
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/Thewolf2068/k3s-test/main/k8s/argocd/apps/apps.yaml"
+    dest: /tmp/apps.yaml
+    mode: '0644'
+  become: true
+
+- name: Initialize App of Apps (Remote Bootstrap)
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/apps.yaml
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
   become: true
