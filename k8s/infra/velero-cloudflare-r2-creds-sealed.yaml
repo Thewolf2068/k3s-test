@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: velero-s3-credentials
+  namespace: velero
+spec:
+  encryptedData:
+    cloud: AgAGif3FjEfgefWhLhtDtZ0OKNzBgveD44nVOemO+JqSE4N2ezeVEG5XwD6nzrUEjzCB9rIGQy6/tGPEW45IMdLvkSo+ZbnQsRPvig63RLGgpCwp51ypFpO7BfQC0f3jrb72bO13CcV8f8wWWW41XxLo+74NqnVZ+7BSF8nxLK3eT285OJQsMamcXQUnTqfPBs6Y7tFD7OopUL73tDWja93ZdA79PffoSYGpAWMobiOiKTtbW1BEMyF9duBL7IAG6EIw6+kE7utx0iRWTp4Mx0Y7o9rZBs86TcHaq2ByZPYwYE/sP3fdzJlh/vuR4f/837NnZtjYvHSrzDATO63HE6KCjLrPyzp9QHTzd8B9VOykHaL6Q6aLZbKCDotuS2w7gD443KRZpi+S3iePdp7/P8CdupZSdivCkdhQKH667aeBsqjldp3L5npyljtaoDs9qg+5nK2L3Ti5sCsCWbGNifcqc+xQ07Owb34oV6NYX5swuGQfA/gwfh7U06F1uBbDhmeCMuNeT7qWBS9N+CviAltsyKECdlN8pVg5pSNxx6Kc6OcydYtYajs9MnWUb/2deA4q2WzZsIJz2rR/QWv0sIx9O84txJHj79Me7WqPhN3wCpGamTn50Xh8NYnbxRS+sFO0MzjWj4KuYHnHAW7JmuIf8CQUItDQuSMS84c8lbVtEwYRXR5lm1N/xerIMRy3PlQYPyluaZmh7HaU4PEpA5Mi+8mwIh3dXR3W449otpHbiBu74ME623I7UPw0zA3my4Eh7LJuFlgLgt+OKn7CJEmU9ltnKTcXC7v1SZMr9bN7moBifL8/kQ5ggjDuTBPLhjwucEJ9otHz+ZnagKbvNAEE25e+3uhpfOYBiE7ZXf0aoPHtFMYMMoyDRyIqzj/mNfGJ/kFlwof8o/Tx5gs=
+  template:
+    metadata:
+      name: velero-s3-credentials
+      namespace: velero
