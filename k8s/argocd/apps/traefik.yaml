@@ -46,6 +46,9 @@ spec:
         logs:
           access:
             enabled: true
+        additionalArguments:
+        - "--experimental.plugins.crowdsec-bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+        - "--experimental.plugins.crowdsec-bouncer.version=v1.3.5"
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
