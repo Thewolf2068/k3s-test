@@ -13,9 +13,9 @@ spec:
         app: qbittorrent
       annotations:
         pre.hook.backup.velero.io/container: qbittorrent
-        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof qbittorrent || echo 1)"]'
-        post.hook.backup.velero.io/container: qbitttorrent
-        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof qbittorrent || echo 1)"]'
+        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof qbittorrent-nox || echo 1)"]'
+        post.hook.backup.velero.io/container: qbittorrent
+        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof qbittorrent-nox || echo 1)"]'
     spec:
       securityContext:
         runAsUser: {{ .Values.global.securityContext.runAsUser }}
