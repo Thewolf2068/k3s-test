@@ -1,20 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-services
-  namespace: argocd
+  name: media
+  namespace: media
 spec:
   project: default
   source:
     repoURL: 'https://github.com/thewolf2068/k3s-test.git'
     targetRevision: HEAD
-    path: charts/my-services # Points strictly to the umbrella root
+    path: charts/media
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: my-services 
+    namespace: media
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

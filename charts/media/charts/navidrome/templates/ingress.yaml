@@ -1,16 +1,15 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: prowlarr
-  namespace: media
+  name: navidrome
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`{{ .Values.subdomain }}.miquella.dev`)
+    - match: Host(`music.miquella.dev`)
       kind: Rule
       services:
-        - name: prowlarr
+        - name: navidrome
           port: {{ .Values.port }}
   tls:
     certResolver: cloudflare

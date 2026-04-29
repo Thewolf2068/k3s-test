@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-config-pvc
-  namespace: jellyfin
+  name: navidrome-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce

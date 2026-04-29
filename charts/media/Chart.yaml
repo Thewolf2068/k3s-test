@@ -1,5 +1,5 @@
 apiVersion: v2
-name: my-services
+name: media
 description: A Helm umbrella chart for my home lab
 version: 0.1.0
 

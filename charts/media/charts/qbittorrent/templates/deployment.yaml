@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prowlarr
-  namespace: media
+  name: qbittorrent
 spec:
   selector:                   
     matchLabels:
-      app: prowlarr
+      app: qbittorrent
   template:
     metadata:
       labels:                 
-        app: prowlarr
+        app: qbittorrent
       annotations:
-        pre.hook.backup.velero.io/container: prowlarr
-        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof prowlarr || echo 1)"]'
-        post.hook.backup.velero.io/container: prowlarr
-        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof prowlarr || echo 1)"]'
+        pre.hook.backup.velero.io/container: qbittorrent
+        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -STOP $(pidof qbittorrent-nox || echo 1)"]'
+        post.hook.backup.velero.io/container: qbittorrent
+        post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof qbittorrent-nox || echo 1)"]'
     spec:
       securityContext:
         runAsUser: {{ .Values.global.securityContext.runAsUser }}
@@ -23,9 +22,9 @@ spec:
         fsGroup: {{ .Values.global.securityContext.runAsGroup }}
         fsGroupChangePolicy: OnRootMismatch
       containers:
-        - name: prowlarr
-          image: ghcr.io/home-operations/prowlarr:{{ .Values.imageTag }}
-          ports:
+        - name: qbittorrent
+          image: ghcr.io/home-operations/qbittorrent:{{ .Values.imageTag }}
+          ports:                  # BEST PRACTICE: Declare your container port
             - containerPort: {{ .Values.port }}
           securityContext:
             allowPrivilegeEscalation: false
@@ -49,4 +48,4 @@ spec:
             type: Directory
         - name: config
           persistentVolumeClaim:
-            claimName: prowlarr-config-pvc
+            claimName: qbittorrent-config-pvc
