@@ -17,7 +17,6 @@ spec:
         post.hook.backup.velero.io/container: jellyfin
         post.hook.backup.velero.io/command: '["/bin/sh", "-c", "kill -CONT $(pidof jellyfin || echo 1)"]'
     spec:
-      # This applies the UID/GID to the ENTIRE pod (all containers)
       securityContext:
         runAsUser: {{ .Values.global.securityContext.runAsUser }}
         runAsGroup: {{ .Values.global.securityContext.runAsGroup }}

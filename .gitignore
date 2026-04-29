@@ -1,2 +1,2 @@
-.vault_pass
+ansible/.vault_pass
 ansible/roles/*.*/
