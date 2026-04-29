@@ -70,9 +70,32 @@
     definition: "{{ lookup('file', 'sealed-secrets-master.key.yaml') | from_yaml }}"
     kubeconfig: /etc/rancher/k3s/k3s.yaml
   become: true
+
+
 - name: Download App of Apps manifest from remote Git repository
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/Thewolf2068/k3s-test/main/k8s/argocd/apps/apps.yaml"
+    dest: /tmp/apps.yaml
+    mode: '0644'
+  become: true
+
+- name: Read the downloaded manifest
+  ansible.builtin.slurp:
+    src: /tmp/apps.yaml
+  register: apps_manifest_encoded
+  become: true
+
+- name: Disable automated sync in the manifest
+  ansible.builtin.set_fact:
+    apps_manifest_no_sync: >-
+      {{ 
+        apps_manifest_encoded.content | b64decode | from_yaml 
+        | combine({'spec': {'syncPolicy': {'automated': None}}}, recursive=True) 
+      }}
+
+- name: Write the modified manifest back to /tmp/apps.yaml
+  ansible.builtin.copy:
+    content: "{{ apps_manifest_no_sync | to_nice_yaml }}"
     dest: /tmp/apps.yaml
     mode: '0644'
   become: true
