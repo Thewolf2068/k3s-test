@@ -8,13 +8,23 @@ jellyfin:
   enabled: true
   imageTag: "10.10.7"
   port: 8096
+  subdomain: "jelly"
 
 navidrome:
   enabled: true
   imageTag: "0.61.2"
   port: "4533"
+  subodmain: "music"
 
 qbittorrent:
   enabled: true
   imageTag: "rolling@sha256:bb82ad6668f8eda1d0fcce6c1341498bfa879155bb1295cd9d314a2c35c07a01"
   port: "8080"
+  subdomain: "torrent"
+
+prowlarr:
+  enabled: true
+  imageTag: "2.3.6@sha256:da6b1f914ad22778c347d554a59b6e40110f654b40528c8de516616382db5148"
+  port: "9696"
+  subdomain: "index"
+

@@ -19,3 +19,8 @@ dependencies:
     version: "0.1.0"
     repository: "file://./charts/qbittorrent"
     condition: qbittorrent.enabled
+  
+  - name: Prowlarr
+    version: "0.1.0"
+    repository: "file://./charts/prowlarr"
+    condition: prowlarr.enabled
